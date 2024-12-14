@@ -1,0 +1,4 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <a href="@Url.Action("Profile", "Account")" class="btn btn-primary ml-2">Consulter mon Profil</a>
+}
