@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connexion à la base de données
+// Connexion Ã  la base de donnÃ©es
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Configuration des paramètres Stripe
+// Configuration des paramÃ¨tres Stripe
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
-// Configuration des paramètres Cloudinary
+// Configuration des paramÃ¨tres Cloudinary
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 // Enregistrement des services pour Cloudinary, Stripe, et email
@@ -29,7 +29,7 @@ builder.Services.AddScoped<EmailService>();
 // Configuration pour FluentEmail avec SMTP
 var emailSettings = builder.Configuration.GetSection("EmailSettings");
 builder.Services
-    .AddFluentEmail(emailSettings["FromAddress"])  // Adresse de l'expéditeur
+    .AddFluentEmail(emailSettings["FromAddress"])  // Adresse de l'expÃ©diteur
     .AddSmtpSender(new SmtpClient(emailSettings["SmtpHost"])  // Serveur SMTP
     {
         Credentials = new NetworkCredential(emailSettings["SmtpUsername"], emailSettings["SmtpPassword"]),  // Identifiants SMTP
@@ -37,21 +37,21 @@ builder.Services
         Port = int.Parse(emailSettings["SmtpPort"])  // Port pour SMTP avec SSL
     });
 
-// Ajout des sessions avec mémoire cache
-builder.Services.AddDistributedMemoryCache(); // Utilisation de la mémoire cache
+// Ajout des sessions avec mÃ©moire cache
+builder.Services.AddDistributedMemoryCache(); // Utilisation de la mÃ©moire cache
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Expiration après 30 minutes d'inactivité
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Expiration aprÃ¨s 30 minutes d'inactivitÃ©
     options.Cookie.HttpOnly = true; // Protection du cookie de session
     options.Cookie.IsEssential = true; // Rendre le cookie essentiel
 });
 
-// Ajout des services pour les contrôleurs et les vues
+// Ajout des services pour les contrÃ´leurs et les vues
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configurer le pipeline de traitement des requêtes HTTP
+// Configurer le pipeline de traitement des requÃªtes HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -72,7 +72,7 @@ app.UseSession();
 // Middleware de routage
 app.UseRouting();
 
-// Appliquer les migrations et initialiser la base de données
+// Appliquer les migrations et initialiser la base de donnÃ©es
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -82,9 +82,9 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
-// Configurer la route par défaut pour les contrôleurs et actions
+// Configurer la route par dÃ©faut pour les contrÃ´leurs et actions
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=Index}/{id?}");
+    pattern: "{controller=Product}/{action=Undex}/{id?}");
 
 app.Run();
