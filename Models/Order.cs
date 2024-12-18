@@ -1,4 +1,4 @@
-﻿using CommerceElectronique.Models;
+using CommerceElectronique.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 namespace CommerceElectronique.Models
@@ -34,5 +34,9 @@ namespace CommerceElectronique.Models
         public int  ? UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
+        public decimal TotalAmount { get; set; } // Montant total ajouté
+        public ICollection<OrderDetail> OrderDetails { get; set; }  // Assurez-vous que cette relation est correctement définie
+
+
     }
 }
