@@ -1,4 +1,4 @@
-﻿using CommerceElectronique.Data;
+using CommerceElectronique.Data;
 using CommerceElectronique.Models;
 using CommerceElectronique.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -83,7 +83,7 @@ namespace CommerceElectronique.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction("Undex", "Product");
             }
         }
 
