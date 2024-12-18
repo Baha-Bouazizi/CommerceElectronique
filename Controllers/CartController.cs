@@ -1,4 +1,4 @@
-﻿using CommerceElectronique.Data;
+using CommerceElectronique.Data;
 using CommerceElectronique.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +72,7 @@ namespace CommerceElectronique.Controllers
             if (product.Stock < quantity)
             {
                 TempData["ErrorMessage"] = "Stock insuffisant.";
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction("Undex", "Product");
             }
 
             var cartItem = await _context.CartItems
@@ -93,7 +93,7 @@ namespace CommerceElectronique.Controllers
                 if (product.Stock < (cartItem.Quantity + quantity))
                 {
                     TempData["ErrorMessage"] = "Stock insuffisant pour ajouter plus de ce produit.";
-                    return RedirectToAction("Index", "Product");
+                    return RedirectToAction("Undex", "Product");
                 }
 
                 cartItem.Quantity += quantity;
@@ -103,7 +103,7 @@ namespace CommerceElectronique.Controllers
 
             await _context.SaveChangesAsync();
             TempData["SuccessMessage"] = "Produit ajouté au panier.";
-            return RedirectToAction("Index", "Product");
+            return RedirectToAction("Undex", "Product");
         }
 
         // Supprimer un produit du panier
