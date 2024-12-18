@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,14 +21,39 @@ namespace CommerceElectronique.Controllers
             _context = context;
         }
 
+        // Méthode pour vérifier si l'utilisateur est un administrateur
+        private bool IsAdmin()
+        {
+            var userRole = HttpContext.Session.GetString("UserRole");
+            return !string.IsNullOrEmpty(userRole) && userRole == "Admin";
+        }
+
+        // Redirection si l'utilisateur n'est pas un administrateur
+        private IActionResult RedirectIfNotAdmin()
+        {
+            if (!IsAdmin())
+            {
+                TempData["ErrorMessage"] = "Vous devez être administrateur pour accéder à cette section.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            return null;
+        }
+
         public IActionResult Categories()
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var categories = _context.Categories.ToList();
             return View(categories);
         }
 
         public IActionResult CreateCategory()
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             return View();
         }
 
@@ -36,6 +61,9 @@ namespace CommerceElectronique.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateCategory(Category category)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             if (ModelState.IsValid)
             {
                 _context.Categories.Add(category);
@@ -47,6 +75,9 @@ namespace CommerceElectronique.Controllers
 
         public IActionResult EditCategory(int id)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var category = _context.Categories.Find(id);
             if (category == null)
             {
@@ -59,6 +90,9 @@ namespace CommerceElectronique.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditCategory(Category category)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             if (ModelState.IsValid)
             {
                 _context.Categories.Update(category);
@@ -70,6 +104,9 @@ namespace CommerceElectronique.Controllers
 
         public IActionResult DeleteCategory(int id)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var category = _context.Categories.Find(id);
             if (category == null)
             {
@@ -81,16 +118,20 @@ namespace CommerceElectronique.Controllers
             return RedirectToAction(nameof(Categories));
         }
 
-
-        // GET: /Admin/Products
         public IActionResult Products()
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var products = _context.Products.Include(p => p.Category).ToList();
             return View(products);
         }
-        // GET: /Admin/DetailsProduct/{id}
+
         public IActionResult DetailsProduct(int id)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var product = _context.Products
                                  .Include(p => p.Category)
                                  .FirstOrDefault(p => p.ProductId == id);
@@ -103,7 +144,6 @@ namespace CommerceElectronique.Controllers
             return View(product);
         }
 
-        // GET: /Admin/AddProduct
         [HttpGet]
         public IActionResult AddProduct()
         {
@@ -137,39 +177,31 @@ namespace CommerceElectronique.Controllers
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction(nameof(Products));
         }
-        // GET: /Admin/EditProduct/{id}
-        // GET: /Admin/EditProduct/{id}
-        // GET: /Admin/EditProduct/{id}
-        // GET: /Admin/EditProduct/{id}
+
         [HttpGet]
         public IActionResult EditProduct(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            if (product == null) return NotFound();
 
             ViewBag.Categories = _context.Categories.ToList();
-
             return View(product);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> EditProduct(int id, Product updatedProduct, IFormFile? imageFile)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            if (product == null) return NotFound();
 
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            // Mise à jour des informations du produit
             product.Name = updatedProduct.Name;
             product.Price = updatedProduct.Price;
             product.Description = updatedProduct.Description;
@@ -178,96 +210,93 @@ namespace CommerceElectronique.Controllers
 
             if (imageFile != null && imageFile.Length > 0)
             {
-                // Charger une nouvelle image
                 var fileName = Path.GetFileName(imageFile.FileName);
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
                 Directory.CreateDirectory(uploadsFolder);
+                var filePath = Path.Combine(uploadsFolder, fileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await imageFile.CopyToAsync(stream);
                 }
 
-                // Mettre à jour le chemin de l'image dans le produit
                 product.ImageUrl = "/images/" + fileName;
             }
 
             await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(Products));
         }
+
         [HttpGet]
         public IActionResult DeleteProduct(int id)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product); // Une vue pour afficher la confirmation
+            return product == null ? NotFound() : View(product);
         }
+
         [HttpPost]
         public async Task<IActionResult> DeleteProductConfirmed(int id)
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            if (product == null) return NotFound();
 
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            // Supprimer l'image associée, si nécessaire
             if (!string.IsNullOrEmpty(product.ImageUrl))
             {
                 var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", product.ImageUrl.TrimStart('/'));
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
+                if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
             }
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Home"); // Rediriger après la suppression
+            return RedirectToAction(nameof(Products));
         }
+
         public IActionResult Dashboard()
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             return View();
         }
+
         public IActionResult Orders()
         {
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
+
             var orders = _context.Orders
-                                 .Include(o => o.User) // Charger les informations sur l'utilisateur
-                                 .Where(o => o.Status == OrderStatus.Pending) // Seules les commandes en attente
-                                 .OrderByDescending(o => o.OrderDate) // Trier les commandes par date (plus récentes en premier)
+                                 .Include(o => o.User)
+                                 .Where(o => o.Status == OrderStatus.Pending)
+                                 .OrderByDescending(o => o.OrderDate)
                                  .ToList();
 
-            return View(orders); // Passer les commandes à la vue
+            return View(orders);
         }
 
         public async Task<IActionResult> Details(int orderId)
         {
-            var order = await _context.Orders
-                .Include(o => o.User) // Inclure les informations de l'utilisateur
-                .Include(o => o.CartItems) // Inclure les éléments du panier
-                .ThenInclude(ci => ci.Product) // Inclure les produits des éléments du panier
-                .FirstOrDefaultAsync(o => o.OrderId == orderId); // Chercher la commande par ID
+            var redirect = RedirectIfNotAdmin();
+            if (redirect != null) return redirect;
 
-            if (order == null)
-            {
-                return NotFound();
-            }
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.CartItems)
+                .ThenInclude(ci => ci.Product)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null) return NotFound();
 
             var orderViewModel = new OrderViewModel
             {
                 OrderId = order.OrderId,
                 OrderNumber = order.OrderNumber,
-                UserName = order.User != null ? order.User.FirstName + " " + order.User.LastName : "No User", // Nom complet de l'utilisateur
+                UserName = order.User != null ? order.User.FirstName + " " + order.User.LastName : "Utilisateur inconnu",
                 OrderDate = order.OrderDate,
                 Status = order.Status,
                 CartItems = order.CartItems.Select(ci => new CartItemViewModel
@@ -275,17 +304,12 @@ namespace CommerceElectronique.Controllers
                     ProductName = ci.Product.Name,
                     Quantity = ci.Quantity,
                     Price = ci.Product.Price,
-                    Total = ci.Quantity * ci.Product.Price // Calcul du total pour chaque produit
+                    Total = ci.Quantity * ci.Product.Price
                 }).ToList(),
-                TotalAmount = order.CartItems.Sum(ci => ci.Quantity * ci.Product.Price) // Calcul du montant total de la commande
+                TotalAmount = order.CartItems.Sum(ci => ci.Quantity * ci.Product.Price)
             };
 
-            return View(orderViewModel); // Passer les détails à la vue
+            return View(orderViewModel);
         }
-
-
-
-
-
     }
 }
