@@ -1,4 +1,4 @@
-﻿using CommerceElectronique.Models;
+using CommerceElectronique.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -17,6 +17,8 @@ namespace CommerceElectronique.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
+
     }
- 
+
 }
