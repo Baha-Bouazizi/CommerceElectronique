@@ -1,4 +1,4 @@
-﻿using CommerceElectronique.Data;
+using CommerceElectronique.Data;
 using CommerceElectronique.Models;
 using CommerceElectronique.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -177,7 +177,7 @@ public class OrderController : Controller
 
         if (string.IsNullOrEmpty(userId))
         {
-            TempData["ErrorMessage"] = "You must be logged in to view your order history.";
+            TempData["ErrorMessage"] = "Vous devez être connecté pour consulter votre historique de commandes.";
             return RedirectToAction("Login", "Account");
         }
 
@@ -188,11 +188,30 @@ public class OrderController : Controller
             .OrderByDescending(o => o.OrderDate)
             .ToListAsync();
 
-        return View(orders); // Passer les commandes à la vue
+        var orderHistoryViewModel = orders.Select(order => new
+        {
+            OrderId = order.OrderId,
+            OrderDate = order.OrderDate,
+            ShippingAddress = order.ShippingAddress,
+            OrderNumber = order.OrderNumber,
+            TotalAmount = order.TotalAmount,
+            Status = order.Status.ToString(),
+            Items = order.CartItems.Select(ci => new
+            {
+                ProductName = ci.Product.Name,
+                Quantity = ci.Quantity,
+                Price = ci.Product.Price,
+                Subtotal = ci.Quantity * ci.Product.Price
+            })
+        });
+
+        return View(orderHistoryViewModel);
     }
 
 
+
     // Méthode pour accepter une commande (Admin)
+    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> ApproveOrder(int orderId)
     {
@@ -214,10 +233,6 @@ public class OrderController : Controller
             return RedirectToAction("Orders", "Admin");
         }
 
-        // Marquer la commande comme complétée
-        order.Status = OrderStatus.Completed;
-        await _context.SaveChangesAsync();
-
         // Calculer le montant total de la commande
         var totalAmount = order.CartItems.Sum(ci => ci.Quantity * ci.Product.Price);
 
@@ -229,6 +244,15 @@ public class OrderController : Controller
             Price = ci.Product.Price,
             Subtotal = ci.Quantity * ci.Product.Price
         }).ToList();
+
+        // Marquer la commande comme complétée
+        order.Status = OrderStatus.Completed;
+
+        // Mise à jour de l'ordre avec le nouveau TotalAmount
+        order.TotalAmount = totalAmount;
+
+        _context.Update(order);  // Mise à jour de l'ordre
+        await _context.SaveChangesAsync();
 
         // Vider le panier de l'utilisateur après la commande
         if (order.User != null)
@@ -270,21 +294,21 @@ public class OrderController : Controller
             foreach (var item in orderItems)
             {
                 body += $@"
-                    <tr>
-                        <td>{item.ProductName}</td>
-                        <td>{item.Quantity}</td>
-                        <td>{item.Price.ToString("C", new CultureInfo("fr-FR"))}</td>
-                        <td>{(item.Quantity * item.Price).ToString("C", new CultureInfo("fr-FR"))}</td>
-                    </tr>";
+                <tr>
+                    <td>{item.ProductName}</td>
+                    <td>{item.Quantity}</td>
+                    <td>{item.Price.ToString("C", new CultureInfo("fr-FR"))}</td>
+                    <td>{(item.Quantity * item.Price).ToString("C", new CultureInfo("fr-FR"))}</td>
+                </tr>";
             }
 
             body += $@"
-                </tbody>
-            </table>
-            <h3>Total Amount: {totalAmount.ToString("C", new CultureInfo("fr-FR"))}</h3>
-            <p>Thank you for shopping with us!</p>
-        </body>
-    </html>";
+            </tbody>
+        </table>
+        <h3>Total Amount: {totalAmount.ToString("C", new CultureInfo("fr-FR"))}</h3>
+        <p>Thank you for shopping with us!</p>
+    </body>
+</html>";
 
             var fromAddress = _configuration["EmailSettings:FromAddress"];
             var fromName = _configuration["EmailSettings:FromName"];
@@ -327,6 +351,7 @@ public class OrderController : Controller
 
         return RedirectToAction("Orders", "Admin");
     }
+
 
 
 
