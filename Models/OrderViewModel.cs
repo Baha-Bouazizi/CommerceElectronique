@@ -1,4 +1,4 @@
-﻿namespace CommerceElectronique.Models
+namespace CommerceElectronique.Models
 {
     public class OrderViewModel
     {
@@ -9,5 +9,6 @@
         public OrderStatus Status { get; set; }
         public List<CartItemViewModel> CartItems { get; set; }
         public decimal TotalAmount { get; set; }
+
     }
 }
