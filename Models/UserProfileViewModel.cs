@@ -1,4 +1,4 @@
-﻿namespace CommerceElectronique.Models
+namespace CommerceElectronique.Models
 {
     public class UserProfileViewModel
     {
