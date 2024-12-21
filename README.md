@@ -58,3 +58,36 @@ Pour installer et exécuter le projet en local, suivez ces étapes :
 1. **Clonez le Dépôt** :  
    ```bash  
    git clone https://github.com/Baha-Bouazizi/Ecommerce-Application  
+2. **Restaurez les Dépendances** :
+```bash
+dotnet restore
+Exécutez l'Application :
+bash
+Copy code
+dotnet run
+
+Voici le contenu demandé en markdown :
+
+markdown
+Copy code
+# Restaurez les Dépendances :
+```bash
+dotnet restore
+Exécutez l'Application :
+bash
+Copy code
+dotnet run
+Accédez à l'Application :
+Ouvrez votre navigateur et rendez-vous sur https://localhost:7014
+🤝 Contribution
+Nous accueillons vos contributions pour améliorer cette application :
+
+Forkez le Dépôt.
+Créez une Nouvelle Branche pour vos Modifications.
+Soumettez une Pull Request pour Revue.
+📧 Informations de Contact
+Pour toute question ou suggestion, veuillez me contacter à : baha.bouazizi@isimg.tn
+🙏 Remerciements
+Un grand merci à mes professeurs, en particulier Madame Nesrine Akrout, pour leur encadrement et leur soutien tout au long de ce projet.
+
+Développé dans le cadre d'un projet académique.
