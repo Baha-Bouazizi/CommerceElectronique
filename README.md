@@ -74,7 +74,7 @@ Bienvenue dans l'Application de Commerce Électronique, une plateforme intuitive
 Experience the Currency Conversion Application in action by watching the following demonstration video:
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=1MKDihVGYzI">
+  <a href="https://youtu.be/GKNtRxA_fG8">
     <img src="public/images/youtt.jpg" alt="Watch the Video" width="150">
   </a>
 </p>
