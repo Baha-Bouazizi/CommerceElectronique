@@ -68,22 +68,13 @@ Bienvenue dans l'Application de Commerce Électronique, une plateforme intuitive
 
 - **Suivi des Commandes** : Accédez à l'historique de vos commandes après authentification.  
 - **Notifications** : Recevez des emails de confirmation après validation des commandes.  
-
-### 💳 Paiement Sécurisé  
-
-- **Intégration Stripe** : Configurez vos clés API dans le fichier de configuration :  
-  ```json  
-  "Stripe": {  
-    "PublishableKey": "VOTRE_PUBLISHABLE_KEY",  
-    "SecretKey": "VOTRE_SECRET_KEY"  
-  }  
+ 
 ## 🎥 Demonstration
 
 Experience the Currency Conversion Application in action by watching the following demonstration video:
 
 <p align="center">
   <a href="https://youtu.be/GKNtRxA_fG8">
-    <img src="public/images/youtt.jpg" alt="Watch the Video" width="150">
   </a>
 </p>
 ## 🚀 Installation Guide
