@@ -1,39 +1,60 @@
-# Commerce Électronique
+# 🛒 Application de Commerce Électronique  
+<p align="center">
+  <img src="public/images/institut-logo.png" alt="Logo de l'Institut" width="150"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="public/images/application-logo.png" alt="Logo de l'Application" width="150"/>
+</p>
 
-Ce projet est une plateforme de commerce électronique développée dans un cadre académique. Elle permet aux utilisateurs de parcourir des produits par catégories, de les ajouter à leur panier, de finaliser leurs achats via un paiement sécurisé, et d'accéder à l'historique de leurs commandes. Les administrateurs disposent de fonctionnalités avancées pour gérer les produits, catégories et commandes.
+## Introduction  
 
----
+Bienvenue dans l'Application de Commerce Électronique, une plateforme intuitive conçue pour améliorer l'expérience d'achat en ligne. Développée dans le cadre d'un projet académique, cette application propose une gestion complète des produits, des commandes et des utilisateurs, tout en intégrant un système de paiement sécurisé via Stripe.  
 
-## Fonctionnalités
+## Aperçu des Fonctionnalités  
 
-### Utilisateurs
-- **Gestion du Panier :** Ajouter, modifier ou supprimer des produits dans le panier.  
-- **Commandes :** Passer des commandes et effectuer des paiements sécurisés via **Stripe**.  
-- **Historique des Commandes :** Consulter les commandes passées après connexion.  
-- **Recherche et Filtrage :** Trouver des produits par nom, catégorie ou prix.  
+### 🌟 Fonctionnalités Principales  
 
-### Administrateurs
-- **Gestion des Produits :** Ajouter, modifier ou supprimer des produits.  
-- **Gestion des Catégories :** Gérer les catégories de produits (création, modification, suppression).  
-- **Gestion des Commandes :** Approuver ou rejeter les commandes des utilisateurs. Un email de confirmation est envoyé automatiquement après l’approbation.  
+- **Gestion des Produits** : Parcourez et gérez les produits selon vos préférences.  
+- **Panier et Commandes** : Ajoutez des produits à votre panier et finalisez vos achats.  
+- **Paiement Sécurisé avec Stripe** : Effectuez vos transactions en toute sécurité.  
+- **Historique des Commandes** : Consultez vos commandes passées après connexion.  
+- **Administration** : Gérez les produits, les catégories et les commandes via un tableau de bord dédié.  
 
----
+## Fonctionnalités Détaillées  
 
-## Technologies utilisées
-- **Backend :** ASP.NET MVC  
-- **Base de données :** SQL Server  
-- **Frontend :** HTML, CSS, JavaScript  
-- **Paiement :** Intégration avec **Stripe** pour des paiements sécurisés  
-- **Emailing :** Envoi d'emails via une API SMTP  
+### 🛒 Gestion des Produits  
 
----
+- **Recherche Avancée** : Trouvez des produits par nom ou par prix.  
+- **Catégories** : Explorez les produits organisés en catégories distinctes.  
+- **Affichage Dynamique** : Ajoutez ou retirez des produits de votre panier en temps réel.  
 
-## Installation et exécution
+### 📦 Commandes et Historique  
 
-### Étapes détaillées pour configurer et exécuter le projet :
+- **Suivi des Commandes** : Accédez à l'historique de vos commandes après authentification.  
+- **Notifications** : Recevez des emails de confirmation après validation des commandes.  
 
-1. **Cloner le dépôt GitHub**  
-   Clonez le projet sur votre machine locale :  
-   ```bash
-   git clone https://github.com/Baha-Bouazizi/CommerceElectronique.git
-   cd CommerceElectronique
+### 💳 Paiement Sécurisé  
+
+- **Intégration Stripe** : Configurez vos clés API dans le fichier de configuration :  
+  ```json  
+  "Stripe": {  
+    "PublishableKey": "VOTRE_PUBLISHABLE_KEY",  
+    "SecretKey": "VOTRE_SECRET_KEY"  
+  }  
+🔒 Administration  
+Gestion des Produits : Ajoutez, modifiez ou supprimez des produits facilement.  
+Gestion des Catégories : Créez ou supprimez des catégories pour une meilleure organisation.  
+Commandes : Validez et gérez les commandes des utilisateurs.  
+
+🛠 Instructions d'Utilisation  
+Explorez les fonctionnalités principales de l'application :  
+
+- **Produits** : Recherchez, ajoutez ou gérez les produits.  
+- **Panier** : Gérez les produits ajoutés à votre panier.  
+- **Paiement** : Finalisez vos commandes via Stripe.  
+
+🚀 Guide d'Installation  
+Pour installer et exécuter le projet en local, suivez ces étapes :  
+
+1. **Clonez le Dépôt** :  
+   ```bash  
+   git clone https://github.com/Baha-Bouazizi/Ecommerce-Application  
