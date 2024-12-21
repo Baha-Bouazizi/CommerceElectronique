@@ -1,9 +1,5 @@
 # 🛒 Application de Commerce Électronique  
-<p align="center">
-  <img src="public/images/institut-logo.png" alt="Logo de l'Institut" width="150"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="public/images/application-logo.png" alt="Logo de l'Application" width="150"/>
-</p>
+
 
 ## Introduction  
 
@@ -33,10 +29,6 @@ Voici le contenu en markdown pour votre README :
 markdown
 Copy code
 # 🛒 Application de Commerce Électronique  
-<p align="center">
-  <img src="public/images/institut-logo.png" alt="Logo de l'Institut" width="150"/>
-  &nbsp;&nbsp;&nbsp;
-</p>
 
 ## Introduction  
 
